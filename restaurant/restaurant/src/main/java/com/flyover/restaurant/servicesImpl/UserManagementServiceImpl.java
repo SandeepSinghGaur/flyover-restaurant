@@ -7,6 +7,7 @@ import com.flyover.restaurant.repositories.UserRepository;
 import com.flyover.restaurant.servicesInterface.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,20 +19,22 @@ import java.util.Optional;
 public class UserManagementServiceImpl implements UserManagementService {
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public boolean userRegistration(UserRegistrationModel userRegistrationModel) {
        User u = new User();
-       u.setUserAddress(userRegistrationModel.getUserAddress());
-       u.setUserEmailId(userRegistrationModel.getUserEmailId());
-       u.setUserMobileNumber(userRegistrationModel.getUserMobileNumber());
-       u.setUserPassword(userRegistrationModel.getUserPassword());
-       u.setUserBirthDate(userRegistrationModel.getUserBirthDate());
-       u.setUserName(userRegistrationModel.getUserName());
-       u.setUserFirstName(userRegistrationModel.getUserFirstName());
-       u.setUserLatName(userRegistrationModel.getUserLastName());
+       u.setUserAddress(userRegistrationModel.getAddress());
+       u.setUserEmailId(userRegistrationModel.getEmail());
+       u.setUserMobileNumber(userRegistrationModel.getMobileNumber());
+       u.setUserPassword(passwordEncoder.encode(userRegistrationModel.getPassword()));
+       u.setUserBirthDate(userRegistrationModel.getBirthDate());
+       u.setUserName(userRegistrationModel.getUsername());
+       u.setUserFirstName(userRegistrationModel.getFirstName());
+       u.setUserLatName(userRegistrationModel.getLastName());
 
        try{
-           User u1 = this.userRepository.save(u);
+           this.userRepository.save(u);
            return true;
        }catch (Exception e){
            e.printStackTrace();

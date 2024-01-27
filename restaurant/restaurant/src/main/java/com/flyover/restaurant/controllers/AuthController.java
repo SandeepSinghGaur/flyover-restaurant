@@ -2,7 +2,10 @@ package com.flyover.restaurant.controllers;
 
 import com.flyover.restaurant.models.JwtRequest;
 import com.flyover.restaurant.models.JwtResponse;
+import com.flyover.restaurant.models.UserRegistrationModel;
 import com.flyover.restaurant.security.JwtHelper;
+import com.flyover.restaurant.servicesInterface.UserManagementService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -27,6 +32,8 @@ public class AuthController {
     private AuthenticationManager manager;
     @Autowired
     private JwtHelper jwtHelper;
+    @Autowired
+    private UserManagementService userManagementService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -46,5 +53,14 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new RuntimeException("Invalid Username and password !!");
         }
+    }
+
+    @PostMapping(value="/registration")
+    public boolean userRegistration(@Valid @RequestBody UserRegistrationModel userRegistrationModel){
+        logger.info("Received user registration request: {}", userRegistrationModel);
+        if(Objects.nonNull(userRegistrationModel)){
+            return this.userManagementService.userRegistration(userRegistrationModel);
+        }
+        return false;
     }
 }
