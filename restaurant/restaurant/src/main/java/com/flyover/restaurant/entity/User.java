@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
@@ -55,11 +54,14 @@ public class User extends BaseEntity implements Serializable {
     @Column(name="user_address")
     private String userAddress;
     @CreationTimestamp
-    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
+    @Column(name = "created_at",  nullable = false)
     private Timestamp created_at;
     @UpdateTimestamp
-    @Column(name = "updated_at", insertable = false, updatable = false, nullable = false)
+    @Column(name = "updated_at",  nullable = false)
     private Timestamp updated_at;
     @OneToMany(mappedBy = "ownerId", cascade = CascadeType.ALL)
     private List<Restaurant> restaurants = new ArrayList<>();
+
+    public User() {
+    }
 }
