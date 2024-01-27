@@ -30,9 +30,5 @@ public class UserController {
         return false;
     }
 
-    @PostMapping("/user/login")
-    public ResponseEntity<UserDto> login(@RequestBody LoginRequestDto request) {
-        return this.userManagementService.login(request.getEmail(), request.getPassword());
-    }
 
 }
