@@ -35,7 +35,7 @@ public class AuthController {
         this.doAuthenticate(request.getMobileNumber(), request.getPassword());
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getMobileNumber());
         String token = this.jwtHelper.generateToken(userDetails);
-        JwtResponse jwtResponse = JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).build();
+        JwtResponse jwtResponse = JwtResponse.builder().token(token).username(userDetails.getUsername()).build();
         return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
     }
 

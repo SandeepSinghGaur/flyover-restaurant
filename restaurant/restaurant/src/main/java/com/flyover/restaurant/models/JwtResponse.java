@@ -8,6 +8,6 @@ import lombok.*;
 @ToString
 @Builder
 public class JwtResponse {
-    private String jwtToken;
+    private String token;
     private String username;
 }
